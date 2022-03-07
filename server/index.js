@@ -14,14 +14,10 @@ app.use(express.json()); //req.body
 app.post("/todos", async (req, res) => {
     try {
         const { description } = req.body;
+
         const newTodo = await client.query(
-            "SELECT * FROM todo", (err, res) => {
-                if (!err) {
-                    console.log(res.rows);
-                } else {
-                    console.log(err.message)
-                }
-            }
+            "INSERT INTO todo (description) VALUES($1)",
+            [description]
         );
 
         res.json(newTodo);
